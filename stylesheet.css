@@ -41,3 +41,12 @@
     border: 1px solid #bcbcbc;      /* わかりやすくボーダーを引く */
     overflow-y: scroll;          /* 縦方向にスクロール可能にする */
   }
+
+  .resultContainer {
+    display: flex;
+    gap: 20px; /* 隙間を空ける（お好みで） */
+  }
+  
+  .resultBlock {
+    flex: 1; /* 均等に横幅を割り当てる */
+  }
