@@ -45,9 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = obj.Item;
             const itemElement = document.createElement("p");
             itemElement.innerHTML = `
-              <strong>${item.itemName}</strong><br>
-              価格: ¥${item.itemPrice}<br>
-              <a href="${item.itemUrl}" target="_blank">商品リンク</a><br><br>
+              <p class = "result">
+                <img src="${item.mediumImageUrls[0].imageUrl}" alt="商品画像"><br>
+                <a href="${item.itemUrl}" target="_blank"><strong>${item.itemName}</strong><br></a>
+                価格: ¥${item.itemPrice}<br><br>
+              <p/>
             `;
             resultDiv.appendChild(itemElement);
           });
@@ -59,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => {
         console.error("通信に失敗しました", error);
       });
+
+      // - - - Amazon - - - //
     }
   })
 })

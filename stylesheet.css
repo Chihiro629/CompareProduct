@@ -37,7 +37,7 @@
 
   .resultBox {
     width: auto;                /* 横幅を200pxに指定 */
-    height: 200px;               /* 横幅を200pxに指定 */
+    height: 300px;               /* 横幅を200pxに指定 */
     border: 1px solid #bcbcbc;      /* わかりやすくボーダーを引く */
     overflow-y: scroll;          /* 縦方向にスクロール可能にする */
   }
@@ -49,4 +49,8 @@
   
   .resultBlock {
     flex: 1; /* 均等に横幅を割り当てる */
+  }
+
+  .result {
+    font-size: 0.8rem;
   }
