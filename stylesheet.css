@@ -54,3 +54,10 @@
   .result {
     font-size: 0.8rem;
   }
+
+  .thumbnail {
+    height: 200px;
+    width: auto;
+    border-radius: 8px; /* 角丸にしたい場合 */
+    object-fit: cover;
+  }

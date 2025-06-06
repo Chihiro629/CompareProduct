@@ -10,45 +10,50 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('resultAm').innerHTML = "";
     document.getElementById('resultRk').innerHTML = "";
 
+    // 空欄で検索したときは文字列を返す
+    if (searchWord === '') {
+      resultRk.innerHTML = "<p>検索文字を入力してね</p>";
+      resultAm.innerHTML = "<p>検索文字を入力してね</p>";
+      return;
+    }
+
     // --- ✅ Amazon RapidAPI 検索 ---
 
-    const amazonUrl = `https://amazon-product-search-api.p.rapidapi.com/?keyword=${encodedKeyword}&country=JP`;
+    // const amazonUrl = `https://amazon-product-search-api.p.rapidapi.com/?keyword=${encodedKeyword}&country=JP`;
+    const amazonUrl = `https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?domainCode=co.jp&keyword=${encodedKeyword}&page=1&excludeSponsored=false&sortBy=relevanceblender&withCache=true`;
     const options = {
       method: 'GET',
       headers: {
         'x-rapidapi-key': 'e5a257a5c8msh20d967d66858b76p144693jsn0bd80caad637',
-        'x-rapidapi-host': 'amazon-product-search-api.p.rapidapi.com'
+        'x-rapidapi-host': 'axesso-axesso-amazon-data-service-v1.p.rapidapi.com'
       }
     };
+    
+
 
     try {
       const res = await fetch(amazonUrl, options);
       console.log("Amazon APIステータスコード:", res.status);
 
-      const debugText = await res.text();
-      console.log("Amazon APIレスポンス:", debugText);
-
       if (!res.ok) throw new Error(`Amazon APIエラー: ${res.status}`);
       const amazonData = await res.json();
 
       const resultAm = document.getElementById('resultAm');
-      if (!amazonData || !amazonData.products || amazonData.products.length === 0) {
+      if (amazonData.foundProducts.length === 0) {
         resultAm.innerHTML = "<p>Amazonで該当商品が見つかりませんでした。</p>";
       } else {
-        amazonData.products.slice(0, 10).forEach(item => {
-          const title = item.title || "商品名不明";
-          const img = item.thumbnail || "";
-          const price = item.price || "価格不明";
-          const link = item.link || "#";
-
-          const html = `
+        const products = amazonData.searchProductDetails;
+        products.forEach(product => {
+          const p = document.createElement("p");
+          p.innerHTML = `
             <div class="result">
-              <img src="${img}" alt="商品画像"><br>
-              <a href="${link}" target="_blank"><strong>${title}</strong></a><br>
-              価格: ${price}<br><br>
+              <img src="${product.imgUrl || ""}" alt="商品画像" class="thumbnail"><br>
+              <a href="${product.dpUrl || "#"}" target="_blank"><strong>${product.productDescription || "商品名なし"}</strong></a><br>
+              価格: ¥${product.price || "価格なし"}<br><br>
+
             </div>
           `;
-          resultAm.innerHTML += html;
+          resultAm.appendChild(p);
         });
       }
     } catch (err) {
@@ -76,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = obj.Item;
         const html = `
           <div class="result">
-            <img src="${item.mediumImageUrls[0].imageUrl}" alt="商品画像"><br>
+            <img src="${item.mediumImageUrls[0].imageUrl}" alt="商品画像" class="thumbnail"><br>
             <a href="${item.itemUrl}" target="_blank"><strong>${item.itemName}</strong></a><br>
             価格: ¥${item.itemPrice}<br><br>
           </div>
