@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('searchForm').addEventListener('submit', async e => {
     e.preventDefault();
 
+    document.getElementById('loadingSpinner').style.display = 'block'; // 検索開始時
+
     const searchWord = document.getElementById('input').value.trim();
     const applicationId = '1076040825352058300'; // 楽天API
     const encodedKeyword = encodeURIComponent(searchWord.replace(/　/g, " "));
@@ -92,5 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("楽天API失敗", e);
       document.getElementById('resultRk').innerHTML = "<p>楽天の検索中にエラーが発生しました。</p>";
     }
+
+  document.getElementById('loadingSpinner').style.display = 'none';  // 結果取得後
+
   });
 });
